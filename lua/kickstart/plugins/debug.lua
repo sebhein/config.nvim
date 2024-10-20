@@ -101,5 +101,18 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    -- Pants specifc config
+    local debug_current_file = function ()
+      local args = vim.fn.input('pytest args? ')
+      vim.cmd('botright vsplit')
+      vim.cmd('vertical resize 120')
+      if #args > 0 then
+        vim.cmd('exe "term pants --loop  test --debug-adapter % -- ' .. args .. '"')
+      else
+        vim.cmd('exe "term pants --loop  test --debug-adapter %"')
+      end
+    end
+    vim.keymap.set('n', '<Leader>sd', debug_current_file, {})
   end,
 }
